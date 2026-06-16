@@ -1,0 +1,20 @@
+{
+  "extraKnownMarketplaces": {
+    "bi-plus-tools": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/wangzhipeng2010-a11y/bi-plus-claude-plugin.git"
+      },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "bi-plus@bi-plus-tools": true
+  },
+  "strictKnownMarketplaces": [
+    {
+      "source": "git",
+      "url": "https://github.com/wangzhipeng2010-a11y/bi-plus-claude-plugin.git"
+    }
+  ]
+}

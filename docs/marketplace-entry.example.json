@@ -1,0 +1,19 @@
+{
+  "name": "bi-plus-official",
+  "owner": {
+    "name": "BI Plus"
+  },
+  "description": "Official BI Plus Claude Code plugins.",
+  "plugins": [
+    {
+      "name": "bi-plus",
+      "displayName": "BI Plus",
+      "source": {
+        "source": "github",
+        "repo": "your-org/bi-plus-claude-plugin",
+        "ref": "v0.1.0"
+      },
+      "description": "BI Plus user-side Claude Code toolkit."
+    }
+  ]
+}

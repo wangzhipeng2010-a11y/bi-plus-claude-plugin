@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+deploy.conf
+
+# AI review 运行产物（脚本与 prompt 进 git，结果不进）
+/.agent/reviews/*
+!/.agent/reviews/.gitkeep
+/.agent/latest-review.md

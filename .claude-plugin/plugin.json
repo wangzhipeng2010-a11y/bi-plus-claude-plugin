@@ -1,0 +1,16 @@
+{
+  "name": "bi-plus",
+  "displayName": "BI Plus",
+  "version": "0.1.5",
+  "description": "BI Plus user-side Claude Code toolkit for sending approved result files through the BI Plus backend.",
+  "author": {
+    "name": "BI Plus"
+  },
+  "keywords": [
+    "bi-plus",
+    "business-intelligence",
+    "feishu",
+    "report-delivery"
+  ],
+  "skills": "./skills"
+}

@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Send a local result file through the BI Plus backend command."""
+
+from __future__ import annotations
+
+import argparse
+import os
+import subprocess
+import sys
+
+BACKEND_CMD = os.environ.get("BI_PLUS_BACKEND_CMD", "/opt/bi-plus/bin/send-feishu-file")
+BACKEND_TIMEOUT = float(os.environ.get("BI_PLUS_BACKEND_TIMEOUT", "120"))
+BACKEND_UNAVAILABLE = "暂时无法连接 BI Plus 后台服务"
+INVALID_REQUEST = "请求格式不正确"
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        prog="send-feishu-file",
+        description="Send a result file to the current user's Feishu through BI Plus.",
+    )
+    parser.add_argument("path", nargs="?", help="File path to send.")
+    parser.add_argument("--file", dest="file_path", help="File path to send.")
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str]) -> int:
+    # The user-facing messages are Chinese; force UTF-8 on our own streams so a
+    # non-UTF-8 server locale can't crash us when printing them.
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8", errors="replace")
+
+    args = parse_args(argv)
+    path = args.file_path or args.path
+    if not path:
+        print(INVALID_REQUEST)
+        return 2
+
+    try:
+        result = subprocess.run(
+            [BACKEND_CMD, "--", path],
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            capture_output=True,
+            timeout=BACKEND_TIMEOUT,
+        )
+    except subprocess.TimeoutExpired:
+        print(BACKEND_UNAVAILABLE)
+        return 1
+    except (FileNotFoundError, OSError):
+        print(BACKEND_UNAVAILABLE)
+        return 1
+
+    message = result.stdout.strip()
+    if not message:
+        print(BACKEND_UNAVAILABLE)
+        return 1
+
+    print(message)
+    return result.returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))
